@@ -3,6 +3,8 @@ using ChillChill.Contract.Users;
 using Microsoft.AspNetCore.Mvc;
 using ChillChill.Api.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using ChillChill.Api.Services.Auth;
 
 namespace ChillChill.Api.Controllers
 {
@@ -10,57 +12,37 @@ namespace ChillChill.Api.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private static readonly List<User> Users = [];
+        private readonly IAuthService _authService;
 
-        private readonly IPasswordHasher<User> _passwordHasher;
-
-        public AuthController(IPasswordHasher<User> passwordHasher)
+        public AuthController(IAuthService authService)
         {
-            _passwordHasher = passwordHasher;
+            _authService = authService;
         }
 
         [HttpPost("register")]
-        public IActionResult Register(RegisterRequest request)
+        public async Task<IActionResult> Register(RegisterRequest request)
         {
-            var user = new User
+            var result = await _authService.Register(request);
+            
+            if (result.IsSuccess == false)
             {
-                Id = Guid.NewGuid(),
-                Username = request.Username,
-                DisplayName = request.DisplayName,
-                CreatedAt = DateTime.UtcNow
-            };
+                return BadRequest(result.ErrorMessage);
+            }
 
-            user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
-
-            Users.Add(user);
-
-            var userDto = new UserDTO
-            {
-                Id = user.Id,
-                Username = user.Username,
-                DisplayName = user.DisplayName
-            };
-
-            return Ok(userDto);
+            return Ok(result);
         }
 
         [HttpPost("login")]
-        public IActionResult login(LoginRequest request)
+        public async Task<IActionResult> login(LoginRequest request)
         {
-            var username = Users.FirstOrDefault(x => x.Username == request.Username);
-            if (username is null) return Unauthorized("wrong username or password");
+            var result = await _authService.Login(request);
 
-            var validPassword = _passwordHasher.VerifyHashedPassword(username, username.PasswordHash, request.Password);
-            if (validPassword == PasswordVerificationResult.Failed) return Unauthorized("wrong username or password");
-
-            var userLogin = new UserDTO
+            if (result is null)
             {
-                Id = Guid.NewGuid(),
-                Username = username.Username,
-                DisplayName = username.Username
-            };
+                return BadRequest("Wrong Username or Password");
+            }
 
-            return Ok(userLogin);
+            return Ok(result);
         }
     }
 }
