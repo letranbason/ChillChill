@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ChillChill.Api/ChillChill.Api.csproj" Id="51648841-b147-4ee4-9649-0294a546f7e1" />
+  <Project Path="ChillChill.Contract/ChillChill.Contract.csproj" />
+  <Project Path="ChillChill/ChillChill.csproj" />
+</Solution>
