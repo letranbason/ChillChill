@@ -1,14 +1,10 @@
-﻿using ChillChill.Contract.Auth;
-using ChillChill.Contract.Users;
+﻿using ChillChill.Api.Services.Auth;
+using ChillChill.Contract.Auth;
 using Microsoft.AspNetCore.Mvc;
-using ChillChill.Api.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using ChillChill.Api.Services.Auth;
 
 namespace ChillChill.Api.Controllers
 {
-    [Controller]
+    [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
@@ -23,7 +19,7 @@ namespace ChillChill.Api.Controllers
         public async Task<IActionResult> Register(RegisterRequest request)
         {
             var result = await _authService.Register(request);
-            
+
             if (result.IsSuccess == false)
             {
                 return BadRequest(result.ErrorMessage);
