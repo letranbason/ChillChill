@@ -6,6 +6,6 @@ namespace ChillChill.Api.Services.Auth
     public interface IAuthService
     {
         Task<AuthResult> Register(RegisterRequest request);
-        Task<LoginReponse> Login(LoginRequest request);
+        Task<LoginResponse> Login(LoginRequest request);
     }
 }

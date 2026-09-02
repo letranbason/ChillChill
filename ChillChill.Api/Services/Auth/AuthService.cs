@@ -53,7 +53,7 @@ namespace ChillChill.Api.Services.Auth
             return new AuthResult { IsSuccess = true, User = userDto };
         }
 
-        public async Task<LoginReponse> Login(LoginRequest request)
+        public async Task<LoginResponse> Login(LoginRequest request)
         {
             var username = await _context.Users.FirstOrDefaultAsync(x => x.Username == request.Username);
             if (username is null) return null!;
@@ -70,7 +70,7 @@ namespace ChillChill.Api.Services.Auth
 
             var token = _tokenService.CreateToken(username);
 
-            return new LoginReponse { Token = token , User = userLogin};
+            return new LoginResponse { Token = token , User = userLogin};
         }
     }
 }

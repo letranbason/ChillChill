@@ -1,5 +1,4 @@
-﻿using ChillChill.Contract.Users;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ChillChill.Contract.Auth
 {
