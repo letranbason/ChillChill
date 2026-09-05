@@ -1,5 +1,6 @@
 ﻿using ChillChill.Contract.Auth;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -23,13 +24,9 @@ namespace ChillChill.Services
         public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Auth/login", loginRequest);
-            if (!response.IsSuccessStatusCode)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                var error = await response.Content.ReadAsStringAsync();
-
-                Console.WriteLine(error);
-
-                return null;
+                return null!;
             }
 
             return await response.Content.ReadFromJsonAsync<LoginResponse>();

@@ -10,11 +10,13 @@ namespace ChillChill.ViewModels
     public partial class LoginViewModel : ViewModelBase
     {
         private readonly Action _goToRegister;
+        private readonly Action _goToDashboard;
         private readonly IApiClient _apiClient;
 
-        public LoginViewModel(Action goToRegister, IApiClient apiClient)
+        public LoginViewModel(Action goToRegister, Action goToDashboard, IApiClient apiClient)
         {
             _goToRegister = goToRegister;
+            _goToDashboard = goToDashboard;
             _apiClient = apiClient;
         }
 
@@ -32,11 +34,20 @@ namespace ChillChill.ViewModels
         [RelayCommand]
         private async Task LoginAsync()
         {
-            var resutt = await _apiClient.LoginAsync(new LoginRequest
+            var result = await _apiClient.LoginAsync(new LoginRequest
             {
                 Username = Username,
                 Password = Password
             });
+            if (result is null)
+            {
+                ErrorMessage = "Invalid username or password.";
+                return;
+            }
+
+            ErrorMessage = string.Empty;
+
+            _goToDashboard();
         }
 
         [RelayCommand]

@@ -72,5 +72,13 @@ namespace ChillChill.Api.Services.Auth
 
             return new LoginResponse { Token = token , User = userLogin};
         }
+
+        public async Task<AuthResult> RevokeToken()
+        {
+            // Implement token revocation logic here
+            // For example, you can remove the token from a database or a cache
+            // This is a placeholder implementation
+            return new AuthResult { IsSuccess = true };
+        }
     }
 }

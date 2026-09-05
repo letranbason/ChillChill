@@ -23,9 +23,16 @@
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.11" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ChillChill.Contract\ChillChill.Contract.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\DashboardView.axaml.cs">
+      <DependentUpon>DashBoardView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

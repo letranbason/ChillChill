@@ -7,5 +7,6 @@ namespace ChillChill.Api.Services.Auth
     {
         Task<AuthResult> Register(RegisterRequest request);
         Task<LoginResponse> Login(LoginRequest request);
+        Task<AuthResult> RevokeToken();
     }
 }

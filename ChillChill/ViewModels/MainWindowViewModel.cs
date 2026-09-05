@@ -22,11 +22,25 @@ namespace ChillChill.ViewModels
                 goToRegister: () =>
                 {
                     CurrentViewModel = CreateRegisterViewModel();
-                }, _apiClient);
+                },
+                goToDashboard: () =>
+                {
+                    CurrentViewModel = CreateDashboardViewModel();
+                },
+                _apiClient);
         }
         private RegisterViewModel CreateRegisterViewModel()
         {
             return new RegisterViewModel(
+                goToLogin: () =>
+                {
+                    CurrentViewModel = CreateLoginViewModel();
+                });
+        }
+
+        private DashboardViewModel CreateDashboardViewModel()
+        {
+            return new DashboardViewModel(
                 goToLogin: () =>
                 {
                     CurrentViewModel = CreateLoginViewModel();

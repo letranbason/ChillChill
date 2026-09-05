@@ -35,10 +35,20 @@ namespace ChillChill.Api.Controllers
 
             if (result is null)
             {
-                return BadRequest("Wrong Username or Password");
+                return Unauthorized("Wrong Username or Password");
             }
 
             return Ok(result);
         }
-    }
+
+        [HttpDelete("revoke")]
+        public async Task<IActionResult> RevokeToken()
+        {
+            var result = await _authService.RevokeToken();
+            if (result.IsSuccess == false)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+            return Ok(result);
+        }
 }
