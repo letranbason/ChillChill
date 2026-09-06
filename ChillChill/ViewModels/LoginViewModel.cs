@@ -28,26 +28,38 @@ namespace ChillChill.ViewModels
 
         [ObservableProperty]
         private string _errorMessage = string.Empty;
+        [ObservableProperty]
+        private bool _isLoading = false;
 
         public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
         [RelayCommand]
         private async Task LoginAsync()
         {
-            var result = await _apiClient.LoginAsync(new LoginRequest
+            try
             {
-                Username = Username,
-                Password = Password
-            });
-            if (result is null)
-            {
-                ErrorMessage = "Invalid username or password.";
-                return;
+                IsLoading = true;
+                var result = await _apiClient.LoginAsync(new LoginRequest
+                {
+                    Username = Username,
+                    Password = Password
+                });
+                if (string.IsNullOrEmpty(result.Token))
+                {
+                    ErrorMessage = "Invalid username or password.";
+                    return;
+                }
+
+                ErrorMessage = string.Empty;
+
+                _goToDashboard();
             }
 
-            ErrorMessage = string.Empty;
+            catch (Exception ex) { 
+            }
 
-            _goToDashboard();
+            finally { IsLoading = false; }
+            
         }
 
         [RelayCommand]

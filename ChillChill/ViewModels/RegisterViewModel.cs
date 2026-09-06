@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using ChillChill.Contract.Auth;
+using ChillChill.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Threading.Tasks;
@@ -8,10 +10,11 @@ namespace ChillChill.ViewModels
     public partial class RegisterViewModel : ViewModelBase
     {
         private readonly Action _goToLogin;
-
-        public RegisterViewModel(Action goToLogin)
+        private readonly IApiClient _apiClient;
+        public RegisterViewModel(Action goToLogin, IApiClient apiClient)
         {
             _goToLogin = goToLogin;
+            _apiClient = apiClient;
         }
 
         [ObservableProperty]
@@ -29,18 +32,43 @@ namespace ChillChill.ViewModels
         [ObservableProperty]
         private string _errorMessage = string.Empty;
 
+        [ObservableProperty]
+        private bool _isLoading = false;
+
         public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
         [RelayCommand]
         private async Task RegisterAsync()
         {
-            if (Password != ConfirmPassword)
+            try
             {
-                ErrorMessage = "Passwords do not match.";
-                return;
-            }
+                IsLoading = true;
+                if (Password != ConfirmPassword)
+                {
+                    ErrorMessage = "Passwords do not match.";
+                    return;
+                }
 
-            await Task.CompletedTask;
+                var result = await _apiClient.RegisterAsync(new RegisterRequest
+                {
+                    Username = Username,
+                    Password = Password,
+                    DisplayName = DisplayName
+                });
+                if (result.IsSuccess == false)
+                {
+                    ErrorMessage = "Register failed";
+                    return;
+                }
+                ErrorMessage = string.Empty;
+
+                _goToLogin();
+            }
+            catch (Exception ex) { }
+            finally
+            {
+                IsLoading = false;
+            }
         }
 
         [RelayCommand]

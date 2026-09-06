@@ -5,6 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 xmlns:vm="clr-namespace:ChillChill.ViewModels"
              x:Class="ChillChill.Views.LoginView"
+			 xmlns:controls="clr-namespace:ChillChill.Views.Controls"
 			 x:DataType="vm:LoginViewModel">
 	<Grid>
 		<Border
@@ -43,7 +44,8 @@
 
 				<TextBlock
                     Text="{Binding ErrorMessage}"
-                    IsVisible="{Binding HasError}" />
+                    IsVisible="{Binding HasError}"
+					Foreground="Red"/>
 
 				<Button
                     Content="Login"
@@ -68,5 +70,6 @@
 			</StackPanel>
 
 		</Border>
+		<controls:LoadingView IsVisible="{Binding IsLoading}" />
 	</Grid>
 </UserControl>

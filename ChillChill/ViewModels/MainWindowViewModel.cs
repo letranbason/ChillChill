@@ -35,7 +35,8 @@ namespace ChillChill.ViewModels
                 goToLogin: () =>
                 {
                     CurrentViewModel = CreateLoginViewModel();
-                });
+                },
+                _apiClient);
         }
 
         private DashboardViewModel CreateDashboardViewModel()
