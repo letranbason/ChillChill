@@ -55,9 +55,10 @@ namespace ChillChill.ViewModels
                     Password = Password,
                     DisplayName = DisplayName
                 });
+                Console.WriteLine(result);
                 if (result.IsSuccess == false)
                 {
-                    ErrorMessage = "Register failed";
+                    ErrorMessage = result.ErrorMessage;
                     return;
                 }
                 ErrorMessage = string.Empty;

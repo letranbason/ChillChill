@@ -56,7 +56,8 @@
 
 				<TextBlock
                     Text="{Binding ErrorMessage}"
-                    IsVisible="{Binding HasError}" />
+                    IsVisible="{Binding HasError}"
+					Foreground="Red"/>
 
 				<Button
                     Content="Register"

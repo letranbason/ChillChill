@@ -19,8 +19,8 @@ namespace ChillChill.Services
         public async Task<AuthResult> RegisterAsync(RegisterRequest registerRequest)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Auth/register", registerRequest);
-
-            return await response.Content.ReadFromJsonAsync<AuthResult>();
+            var result = await response.Content.ReadFromJsonAsync<AuthResult>();
+            return result;
         }
 
         public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)

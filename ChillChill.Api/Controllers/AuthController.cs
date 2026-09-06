@@ -20,9 +20,9 @@ namespace ChillChill.Api.Controllers
         {
             var result = await _authService.Register(request);
 
-            if (result.IsSuccess == false)
+            if (!result.IsSuccess)
             {
-                return BadRequest(result.ErrorMessage);
+                return Conflict(result);
             }
 
             return Ok(result);
