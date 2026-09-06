@@ -9,7 +9,7 @@ namespace ChillChill.Services.Auth
     {
         string? Token { get; set; }
         UserDTO User { get; set; }
-        bool IsLoggedIn { get; set; }
+        bool IsLoggedIn { get; }
         void ClearSession();
     }
 }

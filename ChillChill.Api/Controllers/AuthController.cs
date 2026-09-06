@@ -51,4 +51,5 @@ namespace ChillChill.Api.Controllers
             }
             return Ok(result);
         }
+    }
 }
