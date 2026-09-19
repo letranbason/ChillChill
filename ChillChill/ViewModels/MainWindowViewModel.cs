@@ -1,4 +1,5 @@
 ﻿using ChillChill.Services;
+using ChillChill.Services.Auth;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ChillChill.ViewModels
@@ -6,13 +7,15 @@ namespace ChillChill.ViewModels
     public partial class MainWindowViewModel : ViewModelBase
     {
         private readonly IApiClient _apiClient;
+        private readonly IAuthSession _authSession;
 
         [ObservableProperty]
         private ViewModelBase _currentViewModel;
 
-        public MainWindowViewModel(IApiClient apiClient)
+        public MainWindowViewModel(IApiClient apiClient, IAuthSession authSession)
         {
             _apiClient = apiClient;
+            _authSession = authSession;
             CurrentViewModel = CreateLoginViewModel();
         }
 
@@ -27,7 +30,8 @@ namespace ChillChill.ViewModels
                 {
                     CurrentViewModel = CreateDashboardViewModel();
                 },
-                _apiClient);
+                _apiClient,
+                _authSession);
         }
         private RegisterViewModel CreateRegisterViewModel()
         {

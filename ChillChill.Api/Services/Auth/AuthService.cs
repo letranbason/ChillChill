@@ -63,9 +63,9 @@ namespace ChillChill.Api.Services.Auth
 
             var userLogin = new UserDTO
             {
-                Id = Guid.NewGuid(),
+                Id = username.Id,
                 Username = username.Username,
-                DisplayName = username.Username
+                DisplayName = username.DisplayName
             };
 
             var token = _tokenService.CreateToken(username);

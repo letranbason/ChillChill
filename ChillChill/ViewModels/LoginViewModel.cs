@@ -1,5 +1,6 @@
 ﻿using ChillChill.Contract.Auth;
 using ChillChill.Services;
+using ChillChill.Services.Auth;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -12,12 +13,14 @@ namespace ChillChill.ViewModels
         private readonly Action _goToRegister;
         private readonly Action _goToDashboard;
         private readonly IApiClient _apiClient;
+        private readonly IAuthSession _authSession;
 
-        public LoginViewModel(Action goToRegister, Action goToDashboard, IApiClient apiClient)
+        public LoginViewModel(Action goToRegister, Action goToDashboard, IApiClient apiClient, IAuthSession authSession)
         {
             _goToRegister = goToRegister;
             _goToDashboard = goToDashboard;
             _apiClient = apiClient;
+            _authSession = authSession;
         }
 
         [ObservableProperty]
@@ -44,7 +47,7 @@ namespace ChillChill.ViewModels
                     Username = Username,
                     Password = Password
                 });
-                if (string.IsNullOrEmpty(result.Token))
+                if (string.IsNullOrEmpty(result.Token) || result is null || result.User is null)
                 {
                     ErrorMessage = "Invalid username or password.";
                     return;
@@ -52,6 +55,8 @@ namespace ChillChill.ViewModels
 
                 ErrorMessage = string.Empty;
 
+                _authSession.Token = result.Token;
+                _authSession.User = result.User;
                 _goToDashboard();
             }
 
